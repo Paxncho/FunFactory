@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<TextureDataList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <textures>
+    <TextureData id="001" path="Blegh" name="Ble" description="This is a Bleg" />
+    <TextureData id="td02" path="Dani" name="Daniela" description="This is a Dani" />
+  </textures>
+</TextureDataList>
