@@ -8,11 +8,12 @@ public class TexturePool : MonoBehaviourSingleton<TexturePool> {
 
     public string Path = "Assets/Data/images.xml";
 
-    Dictionary<string, Texture2D> pool;
+    Dictionary<string, Sprite> pool;
 
 	void Start () {
-        pool = new Dictionary<string, Texture2D>();
-        //Load();
+        pool = new Dictionary<string, Sprite>();
+        Debug.Log("LOADING");
+        Load();
     }
 
     void Load() {
@@ -20,13 +21,14 @@ public class TexturePool : MonoBehaviourSingleton<TexturePool> {
         TextureDataList data = DataManager.XMLUnmarshalling<TextureDataList>(Path);
         foreach (TextureData tdata in data.textures) {
             string id = tdata.id;
-            Texture2D texture = Resources.Load<Texture2D>(tdata.path);
+            Sprite texture = Resources.Load<Sprite>(tdata.path);
 
             pool.Add(id, texture);
+            Debug.Log(texture + " LOADED");
         }
     }
 
-    public static Texture2D LoadTexture(string key) {
+    public static Sprite LoadTexture(string key) {
         return Instance.pool[key];
     }
 
@@ -55,23 +57,15 @@ public class TexturePool : MonoBehaviourSingleton<TexturePool> {
 
 //Auxiliar classes to read the data of the Textures
 public class TextureData {
-
     [XmlAttribute] public string id;
     [XmlAttribute] public string path;
     [XmlAttribute] public string name;
     [XmlAttribute] public string description;
-
-    public TextureData() {
-
-    }
+    public TextureData() { }
 }
 
 [XmlRoot]
 public class TextureDataList {
-
     [XmlArray, XmlArrayItem] public TextureData[] textures;
-
-    public TextureDataList() {
-
-    }
+    public TextureDataList() { }
 }
