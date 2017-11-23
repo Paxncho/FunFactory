@@ -19,6 +19,10 @@ public class Generate : MonoBehaviour {
 		
 	}
 
+    public void GenerateObjectBtn() {
+        GenerateObject();
+    }
+
     public GameObject GenerateObject() {
         return ObjectPool.Instantiate(prefab, startPoint.position, Quaternion.identity, parent);
     }

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class MaterialUI : MonoBehaviour {
 
-    public Material material;
+    public GameMaterial material;
 
     public Text Id;
     public Text Description;

@@ -8,41 +8,52 @@ public class PanelNavigation : MonoBehaviour {
     public RectTransform[] panels;
     public int panelWidth;
 
+    public Transform[] worldScreens;
+    public int worldWidth;
+
+    int actualScreen;
+
 	// Use this for initialization
 	void Start () {
-        MoveToPanel(1);
+        MoveToScreen(1);
 	}
 
     // Update is called once per frame
     void Update() {
-        if (Input.touchCount > 0) {
-            Vector3 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-            Vector2 touchPos2D = touchPos;
+        switch (SwipeManager.Direction) {
+            case SwipeDirection.Right:
 
-            RaycastHit2D[] hits = Physics2D.RaycastAll(touchPos2D, Camera.main.transform.forward);
-            //Debug.Log(hits.Length);
+                if (actualScreen > 0)
+                    MoveToScreen(actualScreen - 1);
 
-            foreach (RaycastHit2D hit in hits) {
-                //Debug.Log("Object Hitted: " + hit.transform.position);
+                break;
+            case SwipeDirection.Left:
+
+                if (actualScreen < panels.Length - 1)
+                    MoveToScreen(actualScreen + 1);
+
+                break;
+        }
+    }
+
+    public void MoveToScreen(int panel) {
+        for (int i = 0; i < panels.Length; i++) {
+            if (panels[i] != null) {
+                //Debug.Log(panels[i].localPosition);
+                Vector3 pos = panels[i].localPosition;
+                pos.x = panelWidth * (i - panel);
+                panels[i].localPosition = pos;
             }
         }
 
-        //if (Input.GetMouseButton(0)) {
-        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //    RaycastHit[] hits = Physics.RaycastAll(ray);
-
-        //        foreach (RaycastHit hit in hits) {
-        //            Debug.Log("Object Hitted: " + hit.collider.name);
-        //        }
-        //}
-    }
-
-    public void MoveToPanel(int panel) {
-        for (int i = 0; i < panels.Length; i++) {
-            Debug.Log(panels[i].localPosition);
-            Vector3 pos = panels[i].localPosition;
-            pos.x = panelWidth * (i - panel);
-            panels[i].localPosition = pos;
+        for (int i = 0; i < worldScreens.Length; i++) {
+            if (worldScreens[i] != null) {
+                Vector3 pos = worldScreens[i].localPosition;
+                pos.x = worldWidth * (i - panel);
+                worldScreens[i].localPosition = pos;
+            }
         }
+
+        actualScreen = panel;
     }
 }

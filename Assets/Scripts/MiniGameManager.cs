@@ -26,16 +26,24 @@ public class MiniGameManager : MonoBehaviourSingleton<MiniGameManager> {
                 case TouchPhase.Ended:
                     int tempScore = 0;
 
+                    List<GameObject> selected = new List<GameObject>();
+
                     foreach (GameObject go in toys) {
                         //Debug.Log(go);
                         Toy t = go.GetComponent<Toy>();
 
                         if (t.selected) {
-                            t.Deselected();
-                            if (CheckToy(t)) {
-                                tempScore += t.score;
-                                ObjectPool.Kill(go);
-                            }
+                            selected.Add(go);
+                        }
+                    }
+
+                    foreach(GameObject go in selected) {
+                        Toy t = go.GetComponent<Toy>();
+
+                        t.Deselected();
+                        if (CheckToy(t) && selected.Count > 2) {
+                            tempScore += t.score;
+                            ObjectPool.Kill(go);
                         }
                     }
 

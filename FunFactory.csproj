@@ -78,19 +78,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Factory.cs" />
+    <Compile Include="Assets\Scripts\GameMaterial.cs" />
     <Compile Include="Assets\Scripts\Generate.cs" />
+    <Compile Include="Assets\Scripts\Layout.cs" />
     <Compile Include="Assets\Scripts\LineTest.cs" />
-    <Compile Include="Assets\Scripts\Material.cs" />
     <Compile Include="Assets\Scripts\MaterialUI.cs" />
     <Compile Include="Assets\Scripts\Materials.cs" />
     <Compile Include="Assets\Scripts\MiniGameManager.cs" />
+    <Compile Include="Assets\Scripts\OrderUI.cs" />
     <Compile Include="Assets\Scripts\PanelNavigation.cs" />
     <Compile Include="Assets\Scripts\Piece.cs" />
+    <Compile Include="Assets\Scripts\ResourcesManager.cs" />
     <Compile Include="Assets\Scripts\Toy.cs" />
+    <Compile Include="Assets\Scripts\Utilities\CameraAspectRatioControl.cs" />
     <Compile Include="Assets\Scripts\Utilities\DataManager.cs" />
     <Compile Include="Assets\Scripts\Utilities\MonoBehaviourSingleton.cs" />
     <Compile Include="Assets\Scripts\Utilities\ObjectPool.cs" />
+    <Compile Include="Assets\Scripts\Utilities\SwipeManager.cs" />
     <Compile Include="Assets\Scripts\Utilities\TexturePool.cs" />
+    <Compile Include="Assets\UIManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Data\data.xml" />

@@ -1,0 +1,18 @@
+ScreenSizes to test:
+
+2:3
+3:4
+3:5
+5:8
+5:9
+9:16
+75:128
+
+Squarest to Largest
+3:4 (DEPRECATED)
+2:3 (DEPRECATED)
+5:8
+3:5
+75:128
+9:16
+5:9

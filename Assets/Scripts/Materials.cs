@@ -10,7 +10,7 @@ public class Materials : MonoBehaviour {
 
     public int MaterialSize;
 
-    public Material[] materials;
+    public GameMaterial[] materials;
     public GameObject UIPrefab;
     public GameObject UIContenedor;
 
@@ -27,10 +27,10 @@ public class Materials : MonoBehaviour {
 	}
 
     public void Randomize() {
-        materials = new Material[MaterialSize];
+        materials = new GameMaterial[MaterialSize];
 
         for (int i = 0; i < MaterialSize; i++) {
-            materials[i] = new Material();
+            materials[i] = new GameMaterial();
 
             materials[i].Id = "ID00" + i;
             materials[i].Descripcion = "LOREM IPSUM " + Random.Range(0, 1000);
@@ -90,7 +90,7 @@ public class Materials : MonoBehaviour {
     public class MaterialDataList {
 
         [XmlArray, XmlArrayItem]
-        public Material[] materials;
+        public GameMaterial[] materials;
 
         public MaterialDataList() {
 
