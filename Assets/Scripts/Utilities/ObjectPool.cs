@@ -17,7 +17,7 @@ public class ObjectPool : MonoBehaviourSingleton<ObjectPool> {
         GameObject instance = Instantiate(prefab);
         prefab.SetActive(true);
         instance.name = prefab.name;
-        instance.transform.parent = transform;
+        instance.transform.SetParent(transform);
 
         if (!pool.ContainsKey(instanceID))
             pool.Add(instanceID, new Queue<GameObject>());

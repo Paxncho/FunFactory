@@ -1,42 +1,26 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Xml.Serialization;
 
 using UnityEngine;
-using UnityEngine.UI;
 
-public class GameMaterial : IInventoryItem {
+//Base Class
+public class GameMaterial {
 
-    public string Id;
-    public string Descripcion;
-    public int Costo;
-    public string MaterialNecesario;
+    public string id;
+    public string name;
     public Sprite sprite;
     public Color color;
 
-    int quantity = 0;
+    public GameMaterial() { }
 
-    public GameMaterial() {
-        
-    }
+        //Public methods of the class
 
-    //Inventory Item properties
-    int IInventoryItem.Quantity  { get { return quantity; }    set { quantity = value; } }
-    int IInventoryItem.Price     { get { return Costo; }       set { Costo = value; } }
-    string IInventoryItem.Code   { get { return Id; }          set { Id = value; } }
-    string IInventoryItem.Name   { get { return Descripcion; } set { Descripcion = value; } }
-    Sprite IInventoryItem.Sprite { get { return sprite; } }
-    Color IInventoryItem.Color   { get { return color; } }
+    public Data ToData() {
+        Data data = new Data();
 
-    public DataMaterial ToData() {
-        DataMaterial data = new DataMaterial();
-
-        data.Id = Id;
-        data.Descripcion = Descripcion;
-        data.Costo = Costo;
-        data.MaterialNecesario = MaterialNecesario;
-        data.SpritePath = sprite.name;
+        data.Id = id;
+        data.Name = name;
+        data.SpriteId = SpritePool.GetId(sprite);
         data.R = color.r;
         data.G = color.g;
         data.B = color.b;
@@ -45,29 +29,121 @@ public class GameMaterial : IInventoryItem {
         return data;
     }
 
-    public void FromData(DataMaterial data) {
-        Id = data.Id;
-        Descripcion = data.Descripcion;
-        Costo = data.Costo;
-        MaterialNecesario = data.MaterialNecesario;
-        sprite = TexturePool.LoadTexture(data.SpritePath);
-        Color color = new Color(data.R, data.G, data.B, data.A);
+        //Static methods to create a GameMaterial from a specific data.
+
+    static GameMaterial ReadData(Data data) {
+        return new GameMaterial() {
+            id = data.Id,
+            name = data.Name,
+            sprite = SpritePool.LoadSprite(data.SpriteId),
+            color = new Color(data.R, data.G, data.B, data.A)
+        };
     }
 
+    public static Shop.IItem FromDataToShop (Data data) {
+        return new SellingItem() {
+            material = ReadData(data),
+            price = data.Price
+        };
+    }
+
+    public static Inventory.IItem FromDataToInventory (Data data) {
+        return new InventoryItem() {
+            material = ReadData(data),
+            quantity = data.Quantity
+        };
+    }
+
+    public static DataList ExampleData() {
+        DataList dl = new DataList();
+
+        Data d1 = new Data() {
+            Id = "d1",
+            Name = "Name1",
+            Price = 900,
+            Quantity = 4,
+            SpriteId = SpritePool.GetId(SpritePool.RandomSprite()),
+            R = 1,
+            G = 0,
+            B = 0,
+            A = 1
+        };
+
+        Data d2 = new Data() {
+            Id = "d2",
+            Name = "Name2",
+            Price = 666,
+            Quantity = 6,
+            SpriteId = SpritePool.GetId(SpritePool.RandomSprite()),
+            R = 0,
+            G = 0,
+            B = 1,
+            A = 1
+        };
+
+        dl.materials = new Data[2];
+        dl.materials[0] = d1;
+        dl.materials[1] = d2;
+
+        return dl;
+    }
+
+        //Structs to connect with the UI and the other classes
+
+    public struct SellingItem : Shop.IItem {
+        public GameMaterial material;
+        public int price;
+
+        //Selling Item Properties
+        string  Shop.IItem.Name   { get { return material.name; } }
+        string  Shop.IItem.Code   { get { return material.id; } }
+        int     Shop.IItem.Price  { get { return price; } }
+        Sprite  Shop.IItem.Sprite { get { return material.sprite; } }
+        Color   Shop.IItem.Color  { get { return material.color; } }
+
+        Inventory.Type  Shop.IItem.Type { get { return Inventory.Type.Material; } }
+        Inventory.IItem Shop.IItem.InventoryItem {
+            get {
+                InventoryItem item = new InventoryItem();
+                item.material = material;
+                item.quantity = 0;
+                return item;
+            }
+        }
+    }
+
+    public struct InventoryItem : Inventory.IItem {
+        public GameMaterial material;
+        public int quantity;
+
+        //Inventory Items Properties;
+        string Inventory.IItem.Name     { get { return material.name; } }
+        string Inventory.IItem.Code     { get { return material.id; } }
+        Sprite Inventory.IItem.Sprite   { get { return material.sprite; } }
+        Color  Inventory.IItem.Color    { get { return material.color; } }
+        int    Inventory.IItem.Quantity { get { return quantity; } set { quantity = value; } }
+
+    }
+
+        //Classes to Save and Load data
+
     [Serializable]
-    public class DataMaterial {
+    public class Data {
         [XmlAttribute] public string Id;
-        [XmlAttribute] public string Descripcion;
-        [XmlAttribute] public int Costo;
-        [XmlAttribute] public string MaterialNecesario;
-        [XmlAttribute] public string SpritePath;
+        [XmlAttribute] public string Name;
+        [XmlAttribute] public int Price;
+        [XmlAttribute] public int Quantity;
+        [XmlAttribute] public string SpriteId;
         [XmlAttribute] public float R;
         [XmlAttribute] public float G;
         [XmlAttribute] public float B;
         [XmlAttribute] public float A;
+        public Data() { }
+    }
 
-        public DataMaterial() {
-
-        }
+    [XmlRoot]
+    public class DataList {
+        [XmlArray, XmlArrayItem] public Data[] materials;
+        public DataList() { }
     }
 }

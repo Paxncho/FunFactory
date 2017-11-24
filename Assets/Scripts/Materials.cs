@@ -18,7 +18,9 @@ public class Materials : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+        MaterialSize = 10;
+        Randomize();
+        Save();
 	}
 	
 	// Update is called once per frame
@@ -32,26 +34,37 @@ public class Materials : MonoBehaviour {
         for (int i = 0; i < MaterialSize; i++) {
             materials[i] = new GameMaterial();
 
-            materials[i].Id = "ID00" + i;
-            materials[i].Descripcion = "LOREM IPSUM " + Random.Range(0, 1000);
-            materials[i].Costo = Random.Range(0, 1000);
-            materials[i].MaterialNecesario = "S0, " + Random.Range(0, 1000);
+            materials[i].id = "ID00" + i;
+            materials[i].name = "LOREM IPSUM " + Random.Range(0, 1000);
+            //materials[i].Costo = Random.Range(0, 1000);
             materials[i].color = Random.ColorHSV();
+            materials[i].sprite = SpritePool.RandomSprite();
         }
 
-        ToUI();
+        //ToUI();
     }
 
     public void Save() {
-        MaterialDataList mdl = new MaterialDataList();
-        mdl.materials = this.materials;
+        Data mdl = new Data();
+
+        mdl.materials = new GameMaterial.Data[materials.Length];
+
+        for (int i = 0; i < materials.Length; i++) {
+            mdl.materials[i] = materials[i].ToData();
+        }
 
         DataManager.XMLMarshalling("Assets/Data/materialData.xml", mdl);
     }
 
     public void Load() {
-        MaterialDataList mdl = DataManager.XMLUnmarshalling<MaterialDataList>("Assets/Data/materialData.xml");
-        materials = mdl.materials;
+        Data mdl = DataManager.XMLUnmarshalling<Data>("Assets/Data/materialData.xml");
+
+        materials = new GameMaterial[mdl.materials.Length];
+
+        for (int i = 0; i < mdl.materials.Length; i++) {
+            materials[i] = new GameMaterial();
+            //materials[i].FromData(mdl.materials[i]);
+        }
 
         ToUI();
     }
@@ -80,20 +93,18 @@ public class Materials : MonoBehaviour {
                 Contenedores.Add(go);
             }
 
-            MaterialUI mui = Contenedores[i].GetComponent<MaterialUI>();
-            mui.material = materials[i];
+            ShopItemUI mui = Contenedores[i].GetComponent<ShopItemUI>();
+            //mui.material = materials[i];
             mui.UpdateUI();
         }
     }
 
     [XmlRoot]
-    public class MaterialDataList {
+    public class Data {
 
         [XmlArray, XmlArrayItem]
-        public GameMaterial[] materials;
+        public GameMaterial.Data[] materials;
 
-        public MaterialDataList() {
-
-        }
+        public Data() { }
     }
 }

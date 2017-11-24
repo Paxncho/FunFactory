@@ -16,7 +16,7 @@ public class Piece : MonoBehaviour {
 
         //Assign the new Sprite
         if (data.idTexture != "") {
-            Sprite t = TexturePool.LoadTexture(data.idTexture);
+            Sprite t = SpritePool.LoadSprite(data.idTexture);
             GetComponent<SpriteRenderer>().sprite = t;
             Debug.Log("LOADED " + t);
         }

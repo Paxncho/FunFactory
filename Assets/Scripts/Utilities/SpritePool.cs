@@ -4,7 +4,7 @@ using UnityEngine;
 
 using System.Xml.Serialization;
 
-public class TexturePool : MonoBehaviourSingleton<TexturePool> {
+public class SpritePool : MonoBehaviourSingleton<SpritePool> {
 
     public string Path = "Assets/Data/images.xml";
 
@@ -28,8 +28,43 @@ public class TexturePool : MonoBehaviourSingleton<TexturePool> {
         }
     }
 
-    public static Sprite LoadTexture(string key) {
+    Sprite RandomTexture() {
+        int total = pool.Count;
+        int toGet = Random.Range(0, total);
+
+        int i = 0;
+
+        foreach (Sprite sprite in pool.Values) {
+            if (i == toGet) {
+                return sprite;
+            }
+            i++;
+        }
+
+        return null;
+    }
+
+    string FindId(Sprite sprite) {
+        foreach (string path in pool.Keys) {
+            Sprite s = pool[path];
+
+            if (s == sprite)
+                return path;
+        }
+
+        return "";
+    }
+
+    public static Sprite LoadSprite(string key) {
         return Instance.pool[key];
+    }
+
+    public static Sprite RandomSprite() {
+        return Instance.RandomTexture();
+    }
+
+    public static string GetId(Sprite sprite) {
+        return Instance.FindId(sprite);
     }
 
     public void XMLExample() {
