@@ -1,32 +1,39 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class ShopItemUI : MonoBehaviour {
 
     public Shop.IItem item;
 
-    public Text Description;
-    public Image Image;
+    public Text description;
+    public Image icon;
+    public Text quantityText;
 
-    //TODO
-    //ENABLE BUY ITEMS
+    int quantity = 0;
 
-    public void UpdateUI() {
+    public virtual void UpdateUI() {
         string description = item.Name + "\n$" + item.Price;
 
-        Description.text = description;
-        Image.sprite = item.Sprite;
-        Image.color = item.Color;
+        this.description.text = description;
+        icon.sprite = item.Sprite;
+        icon.color = item.Color;
     }
 
-    public void Buy() {
-        if (item.Type == Inventory.Type.Material) {
-            Shop.Instance.BuyMaterial(item.Code, 1);
-        } else if (item.Type == Inventory.Type.Worker) {
-            Shop.Instance.HireWorker(item.Code);
+    //Buy a Material, not Hire a Worker
+    public virtual void Buy() {
+        bool test = Shop.Instance.BuyMaterial(item.Code, quantity);
+
+        quantity = 0;
+        quantityText.text = quantity.ToString();
+    }
+
+    public void ChangeQuantity(int value) {
+        int tempQuantity = quantity + value;
+
+        if (tempQuantity >= 0) {
+            quantity = tempQuantity;
         }
+
+        quantityText.text = quantity.ToString();
     }
 }

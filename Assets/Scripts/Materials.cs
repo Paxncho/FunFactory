@@ -47,7 +47,7 @@ public class Materials : MonoBehaviour {
     public void Save() {
         Data mdl = new Data();
 
-        mdl.materials = new GameMaterial.Data[materials.Length];
+        mdl.materials = new GameMaterial.MaterialData[materials.Length];
 
         for (int i = 0; i < materials.Length; i++) {
             mdl.materials[i] = materials[i].ToData();
@@ -103,7 +103,7 @@ public class Materials : MonoBehaviour {
     public class Data {
 
         [XmlArray, XmlArrayItem]
-        public GameMaterial.Data[] materials;
+        public GameMaterial.MaterialData[] materials;
 
         public Data() { }
     }

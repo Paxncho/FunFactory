@@ -1,11 +1,11 @@
-﻿using System;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 using UnityEngine;
 
 //Base Class
 public class GameMaterial {
-
+        
+        //Attributes of the class
     public string id;
     public string name;
     public Sprite sprite;
@@ -15,8 +15,8 @@ public class GameMaterial {
 
         //Public methods of the class
 
-    public Data ToData() {
-        Data data = new Data();
+    public MaterialData ToData() {
+        MaterialData data = new MaterialData();
 
         data.Id = id;
         data.Name = name;
@@ -30,8 +30,7 @@ public class GameMaterial {
     }
 
         //Static methods to create a GameMaterial from a specific data.
-
-    static GameMaterial ReadData(Data data) {
+    static GameMaterial ReadData(MaterialData data) {
         return new GameMaterial() {
             id = data.Id,
             name = data.Name,
@@ -39,25 +38,24 @@ public class GameMaterial {
             color = new Color(data.R, data.G, data.B, data.A)
         };
     }
-
-    public static Shop.IItem FromDataToShop (Data data) {
+    public static Shop.IItem FromDataToShop (MaterialData data) {
         return new SellingItem() {
             material = ReadData(data),
             price = data.Price
         };
     }
-
-    public static Inventory.IItem FromDataToInventory (Data data) {
+    public static Inventory.IItem FromDataToInventory (MaterialData data) {
         return new InventoryItem() {
             material = ReadData(data),
             quantity = data.Quantity
         };
     }
 
-    public static DataList ExampleData() {
-        DataList dl = new DataList();
+        //Static Method to create an ExampleXML
+    public static MaterialDataList ExampleData() {
+        MaterialDataList dl = new MaterialDataList();
 
-        Data d1 = new Data() {
+        MaterialData d1 = new MaterialData() {
             Id = "d1",
             Name = "Name1",
             Price = 900,
@@ -69,7 +67,7 @@ public class GameMaterial {
             A = 1
         };
 
-        Data d2 = new Data() {
+        MaterialData d2 = new MaterialData() {
             Id = "d2",
             Name = "Name2",
             Price = 666,
@@ -81,7 +79,7 @@ public class GameMaterial {
             A = 1
         };
 
-        dl.materials = new Data[2];
+        dl.materials = new MaterialData[2];
         dl.materials[0] = d1;
         dl.materials[1] = d2;
 
@@ -89,7 +87,6 @@ public class GameMaterial {
     }
 
         //Structs to connect with the UI and the other classes
-
     public struct SellingItem : Shop.IItem {
         public GameMaterial material;
         public int price;
@@ -104,14 +101,13 @@ public class GameMaterial {
         Inventory.Type  Shop.IItem.Type { get { return Inventory.Type.Material; } }
         Inventory.IItem Shop.IItem.InventoryItem {
             get {
-                InventoryItem item = new InventoryItem();
-                item.material = material;
-                item.quantity = 0;
-                return item;
+                return new InventoryItem {
+                    material = material,
+                    quantity = 0
+                };
             }
         }
     }
-
     public struct InventoryItem : Inventory.IItem {
         public GameMaterial material;
         public int quantity;
@@ -126,9 +122,7 @@ public class GameMaterial {
     }
 
         //Classes to Save and Load data
-
-    [Serializable]
-    public class Data {
+    [System.Serializable] public class MaterialData {
         [XmlAttribute] public string Id;
         [XmlAttribute] public string Name;
         [XmlAttribute] public int Price;
@@ -138,12 +132,10 @@ public class GameMaterial {
         [XmlAttribute] public float G;
         [XmlAttribute] public float B;
         [XmlAttribute] public float A;
-        public Data() { }
+        public MaterialData() { }
     }
-
-    [XmlRoot]
-    public class DataList {
-        [XmlArray, XmlArrayItem] public Data[] materials;
-        public DataList() { }
+    [XmlRoot] public class MaterialDataList {
+        [XmlArray, XmlArrayItem] public MaterialData[] materials;
+        public MaterialDataList() { }
     }
 }

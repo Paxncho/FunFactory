@@ -91,16 +91,14 @@ public class SpritePool : MonoBehaviourSingleton<SpritePool> {
 
 
 //Auxiliar classes to read the data of the Textures
-public class TextureData {
+[System.Serializable] public class TextureData {
     [XmlAttribute] public string id;
     [XmlAttribute] public string path;
     [XmlAttribute] public string name;
     [XmlAttribute] public string description;
     public TextureData() { }
 }
-
-[XmlRoot]
-public class TextureDataList {
+[XmlRoot] public class TextureDataList {
     [XmlArray, XmlArrayItem] public TextureData[] textures;
     public TextureDataList() { }
 }
