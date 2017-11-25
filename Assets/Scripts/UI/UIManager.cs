@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviourSingleton<UIManager> {
@@ -12,11 +10,21 @@ public class UIManager : MonoBehaviourSingleton<UIManager> {
     public ShopPanels shopPanel;
     public InventoryUI inventoryUI;
     public InventoryPanels inventoryPanel;
+    public RecipesUI recipesUI;
+    public ToyGenerationUI generateToy;
 
-    public WorkerUI workerStation;
-
-    public void UpdateGUI() {
+    public void UpdateMoney() {
         moneyText.text = Inventory.Instance.Money.ToString();
+    }
+
+        //Recipes Methods
+    public void ToRecipes() {
+        recipesUI.layout.SetActive(true);
+        recipesUI.titleText.text = recipesUI.title;
+        Recipes.Instance.UpdateGUI();
+    }
+    public void BackFromRecipes() {
+        recipesUI.layout.SetActive(false);
     }
 
         //Inventory Methods
@@ -69,21 +77,6 @@ public class UIManager : MonoBehaviourSingleton<UIManager> {
 
         //Structs to organize the Inspector and have a better management of the UI
 
-    [System.Serializable] public struct WorkerUI {
-        //WorkerData
-        public Transform Parent;
-        public Text[] stats;
-        public Text[] statsPercentages;
-        public Slider[] statsBar;
-
-        public Image WorkTable;
-        public Image Worker;
-
-        public Image baseMaterial;
-        public Image finalMaterial;
-
-        public Text timeLeft;
-    }
     [System.Serializable] public struct ShopUI {
         public Transform materialsParent;
         public GameObject materialsPrefab;
@@ -116,5 +109,23 @@ public class UIManager : MonoBehaviourSingleton<UIManager> {
         public GameObject buyMaterial;
         public GameObject workers;
         public GameObject hireWorker;
+    }
+    [System.Serializable] public struct RecipesUI {
+        public GameObject layout;
+        public Text titleText;
+        public string title;
+
+        public Transform parent;
+        public GameObject prefab;
+    }
+    [System.Serializable] public struct TimeBar {
+        public Slider bar;
+        public Text timeLeftText;
+    }
+    [System.Serializable] public struct ToyGenerationUI {
+        public GameObject basePrefab;
+        public GameObject piecePrefab;
+        public Transform parent;
+        public Transform generationPoint;
     }
 }

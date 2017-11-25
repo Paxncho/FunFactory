@@ -13,22 +13,6 @@ public class GameMaterial {
 
     public GameMaterial() { }
 
-        //Public methods of the class
-
-    public MaterialData ToData() {
-        MaterialData data = new MaterialData();
-
-        data.Id = id;
-        data.Name = name;
-        data.SpriteId = SpritePool.GetId(sprite);
-        data.R = color.r;
-        data.G = color.g;
-        data.B = color.b;
-        data.A = color.a;
-
-        return data;
-    }
-
         //Static methods to create a GameMaterial from a specific data.
     static GameMaterial ReadData(MaterialData data) {
         return new GameMaterial() {
@@ -119,10 +103,25 @@ public class GameMaterial {
         Color  Inventory.IItem.Color    { get { return material.color; } }
         int    Inventory.IItem.Quantity { get { return quantity; } set { quantity = value; } }
 
+        DataManager.IData Inventory.IItem.Data {
+            get {
+                return new MaterialData() {
+                    Id = material.id,
+                    Name = material.name,
+                    Price = -1,
+                    Quantity = quantity,
+                    SpriteId = SpritePool.GetId(material.sprite),
+                    R = material.color.r,
+                    G = material.color.g,
+                    B = material.color.b,
+                    A = material.color.a
+                };
+            }
+        }
     }
 
         //Classes to Save and Load data
-    [System.Serializable] public class MaterialData {
+    [System.Serializable] public class MaterialData : DataManager.IData {
         [XmlAttribute] public string Id;
         [XmlAttribute] public string Name;
         [XmlAttribute] public int Price;

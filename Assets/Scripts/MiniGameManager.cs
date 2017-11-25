@@ -41,13 +41,15 @@ public class MiniGameManager : MonoBehaviourSingleton<MiniGameManager> {
                         Toy t = go.GetComponent<Toy>();
 
                         t.Deselected();
-                        if (CheckToy(t) && selected.Count > 2) {
+                        //if (CheckToy(t) && selected.Count > 2) {
+                        if (selected.Count > 2) {
                             tempScore += t.score;
                             ObjectPool.Kill(go);
                         }
                     }
 
-                    totalScore += tempScore;
+                    Inventory.Instance.Money += tempScore;
+                    UIManager.Instance.UpdateMoney();
                     break;
             }
         }

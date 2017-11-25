@@ -50,7 +50,7 @@ public class Materials : MonoBehaviour {
         mdl.materials = new GameMaterial.MaterialData[materials.Length];
 
         for (int i = 0; i < materials.Length; i++) {
-            mdl.materials[i] = materials[i].ToData();
+            //mdl.materials[i] = materials[i].ToData();
         }
 
         DataManager.XMLMarshalling("Assets/Data/materialData.xml", mdl);

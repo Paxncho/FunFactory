@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-//BaseClass
+//Base Class
 public class Worker {
 
         //Attributes of the class
@@ -15,13 +15,10 @@ public class Worker {
     public float tired;
     public int talent;
     public float motivation;
+    public int maximumTalentPossible = 100;
 
     public Worker() { }
-
-        //Public methods of the class
-
-    //TODO ToData()
-
+   
         //Static Methods to create a Worker from a specific data.
     static Worker ReadData(WorkerData data) {
         return new Worker() {
@@ -120,10 +117,29 @@ public class Worker {
         Sprite Inventory.IItem.Sprite   { get { return worker.sprite; } }
         Color  Inventory.IItem.Color    { get { return worker.color; } }
         int    Inventory.IItem.Quantity { get { return quantity; } set { quantity = value; } }
+
+        DataManager.IData Inventory.IItem.Data {
+            get {
+                return new WorkerData() {
+                    Id = worker.id,
+                    Name = worker.name,
+                    Price = -1,
+                    Quantity = quantity,
+                    SpriteId = SpritePool.GetId(worker.sprite),
+                    Tired = worker.tired,
+                    Talent = worker.talent,
+                    Motivation = worker.motivation,
+                    R = worker.color.r,
+                    G = worker.color.g,
+                    B = worker.color.b,
+                    A = worker.color.a
+                };
+            }
+        }
     }
 
         //Classes to Save and Load data
-    [System.Serializable] public class WorkerData {
+    [System.Serializable] public class WorkerData : DataManager.IData {
         [XmlAttribute] public string Id;
         [XmlAttribute] public string Name;
         [XmlAttribute] public int Price;
@@ -136,6 +152,7 @@ public class Worker {
         [XmlAttribute] public float G;
         [XmlAttribute] public float B;
         [XmlAttribute] public float A;
+        public WorkerData() { }
     }
     [XmlRoot] public class WorkerDataList {
         [XmlArray, XmlArrayItem] public WorkerData[] workers;

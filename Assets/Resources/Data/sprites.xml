@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TextureDataList>
+	<textures>
+		<TextureData id="coin01" path="Sprites/GoldenCoin" name="Coin" description="A Golden Coin"/>
+		<TextureData id="star01" path="Sprites/star" name="Star" description="A Golden Star"/>
+		<TextureData id="shuffle01" path="Sprites/shuffle" name="Shuffle" description="Shuffle Icon"/>
+		<TextureData id="circle" path="Sprites/Circle" name="Circle" description="A Circle"/>
+		<TextureData id="patito" path="Sprites/patito" name="patito" description="A Duck"/>
+		<TextureData id="devil" path="Sprites/devil" name="devil" description="Devil"/>
+		<TextureData id="cris" path="Sprites/cris" name="cris" description="cris"/>
+	</textures>
+</TextureDataList>

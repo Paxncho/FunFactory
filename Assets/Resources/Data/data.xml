@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<MaterialDataList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <materials>
+    <Material>
+      <Id>ID000</Id>
+      <Descripcion>LOREM IPSUM BLAX0</Descripcion>
+      <Costo>0</Costo>
+      <MaterialNecesario>S0, 0</MaterialNecesario>
+      <color>
+        <r>0.58680886</r>
+        <g>0.7384462</g>
+        <b>0.349013031</b>
+        <a>1</a>
+      </color>
+    </Material>
+    <Material>
+      <Id>ID001</Id>
+      <Descripcion>LOREM IPSUM BLAX1</Descripcion>
+      <Costo>1</Costo>
+      <MaterialNecesario>S0, 1</MaterialNecesario>
+      <color>
+        <r>0.351388484</r>
+        <g>0.406307042</g>
+        <b>0.44754976</b>
+        <a>1</a>
+      </color>
+    </Material>
+    <Material>
+      <Id>ID002</Id>
+      <Descripcion>LOREM IPSUM BLAX2</Descripcion>
+      <Costo>2</Costo>
+      <MaterialNecesario>S0, 2</MaterialNecesario>
+      <color>
+        <r>0.668932855</r>
+        <g>0.397837281</g>
+        <b>0.487940222</b>
+        <a>1</a>
+      </color>
+    </Material>
+    <Material>
+      <Id>ID003</Id>
+      <Descripcion>LOREM IPSUM BLAX3</Descripcion>
+      <Costo>3</Costo>
+      <MaterialNecesario>S0, 3</MaterialNecesario>
+      <color>
+        <r>0.461534441</r>
+        <g>0.254038543</g>
+        <b>0.293960363</b>
+        <a>1</a>
+      </color>
+    </Material>
+    <Material>
+      <Id>ID004</Id>
+      <Descripcion>LOREM IPSUM BLAX4</Descripcion>
+      <Costo>4</Costo>
+      <MaterialNecesario>S0, 4</MaterialNecesario>
+      <color>
+        <r>0.1220478</r>
+        <g>0.01877184</g>
+        <b>0.09409489</b>
+        <a>1</a>
+      </color>
+    </Material>
+    <Material>
+      <Id>ID005</Id>
+      <Descripcion>LOREM IPSUM BLAX5</Descripcion>
+      <Costo>5</Costo>
+      <MaterialNecesario>S0, 5</MaterialNecesario>
+      <color>
+        <r>0.686353147</r>
+        <g>0.6853843</g>
+        <b>0.6480079</b>
+        <a>1</a>
+      </color>
+    </Material>
+  </materials>
+</MaterialDataList>

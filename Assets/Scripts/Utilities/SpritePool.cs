@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 public class SpritePool : MonoBehaviourSingleton<SpritePool> {
 
-    public string Path = "Assets/Data/images.xml";
+    public string Path = "Data/sprites";
 
     Dictionary<string, Sprite> pool;
 
@@ -17,8 +17,8 @@ public class SpritePool : MonoBehaviourSingleton<SpritePool> {
     }
 
     void Load() {
-
-        TextureDataList data = DataManager.XMLUnmarshalling<TextureDataList>(Path);
+        TextAsset xml = Resources.Load<TextAsset>(Path);
+        TextureDataList data = DataManager.XMLUnmarshallingFromText<TextureDataList>(xml.text);
         foreach (TextureData tdata in data.textures) {
             string id = tdata.id;
             Sprite texture = Resources.Load<Sprite>(tdata.path);

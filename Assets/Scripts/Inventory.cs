@@ -13,6 +13,8 @@ public class Inventory : MonoBehaviourSingleton<Inventory> {
 
         Sprite Sprite { get; }
         Color Color   { get; }
+
+        DataManager.IData Data { get; }
     }
 
 
@@ -21,17 +23,17 @@ public class Inventory : MonoBehaviourSingleton<Inventory> {
     public int Money { get; set; }
 
     //Dictionaries to store all the items that the user can have.
-    Dictionary<string, IItem> materials = new Dictionary<string, IItem>();
-    Dictionary<string, IItem> pieces = new Dictionary<string, IItem>();
-    Dictionary<string, IItem> workers = new Dictionary<string, IItem>();
-    Dictionary<string, IItem> toys = new Dictionary<string, IItem>();
-
+    public Dictionary<string, IItem> materials = new Dictionary<string, IItem>();
+    public Dictionary<string, IItem> pieces = new Dictionary<string, IItem>();
+    public Dictionary<string, IItem> workers = new Dictionary<string, IItem>();
+    public Dictionary<string, IItem> toys = new Dictionary<string, IItem>();
 
         //Private methods for internal (or common) operations
 
    void Start() {
         Money = 10000;
-        UIManager.Instance.UpdateGUI();
+        //LoadInventoryAndFactories
+        UIManager.Instance.UpdateMoney();
     }
 
     //Deactive all the items in the GUI
@@ -67,7 +69,7 @@ public class Inventory : MonoBehaviourSingleton<Inventory> {
     }
 
 
-    //Public methods to connect with other classes
+        //Public methods to connect with other classes
 
     //Add an item to the inventory
     public void Add(IItem item, Type type) {
@@ -108,6 +110,23 @@ public class Inventory : MonoBehaviourSingleton<Inventory> {
         UpdateGUI(type);
     }
 
+    public void Remove(string code, int quantity, Type type) {
+        switch (type) {
+            case Type.Material:
+                materials[code].Quantity -= quantity;
+                break;
+            case Type.Piece:
+                pieces[code].Quantity -= quantity;
+                break;
+            case Type.Toy:
+                toys[code].Quantity -= quantity;
+                break;
+            case Type.Worker:
+                workers[code].Quantity -= quantity;
+                break;
+        }
+    }
+
     //Update all the UI of the
     public void UpdateGUI(Type type) {
 
@@ -139,7 +158,7 @@ public class Inventory : MonoBehaviourSingleton<Inventory> {
             UpdateGUI(worker, prefab, parent);
         }
 
-        UIManager.Instance.UpdateGUI();
+        UIManager.Instance.UpdateMoney();
     }
 
     // TODO

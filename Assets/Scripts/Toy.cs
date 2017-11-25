@@ -19,6 +19,14 @@ public class Toy : MonoBehaviour {
         originalColor = m_renderer.color;
         MiniGameManager.Instance.AddToy(gameObject);
         Debug.Log("This is Start");
+
+
+        //Collider Thing
+        foreach (Collider2D c in GetComponents<Collider2D>()) {
+            Destroy(c);
+        }
+
+        gameObject.AddComponent<CapsuleCollider2D>();
     }
 	
 	// Update is called once per frame
@@ -49,7 +57,7 @@ public class Toy : MonoBehaviour {
 
     public string[] GetToyData() {
         List<string> dataList = new List<string>();
-        foreach (Piece p in GetComponentsInChildren<Piece>()) {
+        foreach (MiniGamePiece p in GetComponentsInChildren<MiniGamePiece>()) {
             foreach (string s in p.GetData()) {
                 dataList.Add(s);
             }

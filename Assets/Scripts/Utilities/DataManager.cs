@@ -2,7 +2,7 @@
 using System.Xml.Serialization;
 
 public class DataManager : MonoBehaviourSingleton<DataManager> {
-    
+
     public static void XMLMarshalling(string path, object item) {
         using (FileStream fs = new FileStream(path, FileMode.Create)) {
             XmlSerializer xml = new XmlSerializer(item.GetType());
@@ -15,5 +15,14 @@ public class DataManager : MonoBehaviourSingleton<DataManager> {
             XmlSerializer xml = new XmlSerializer(typeof(T));
             return (T)xml.Deserialize(fs);
         }
-    }    
+    }
+
+    public static T XMLUnmarshallingFromText<T>(string text) {
+        using (StringReader sr = new StringReader(text)) {
+            XmlSerializer xml = new XmlSerializer(typeof(T));
+            return (T)xml.Deserialize(sr);
+        }
+    }
+
+    public interface IData { }
 }

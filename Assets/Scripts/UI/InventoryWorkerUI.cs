@@ -1,8 +1,6 @@
 ﻿using UnityEngine.UI;
 
-public class InventoryWorkerUI : InventoryItemUI{
-    public int MaximumTalent;
-
+public class InventoryWorkerUI : InventoryItemUI {
     public Slider Stat1;
     public Text Stat1Text;
     public string Stat1Title;
@@ -17,16 +15,14 @@ public class InventoryWorkerUI : InventoryItemUI{
         Stat1.interactable = false;
         Stat2.interactable = false;
         Stat3.interactable = false;
-
-        Stat1.maxValue = MaximumTalent;
     }
 
     public override void UpdateUI() {
-        Stat1.maxValue = MaximumTalent;
-
         base.UpdateUI();
 
         Worker worker = ((Worker.HiredWorker)item).worker;
+
+        Stat1.maxValue = worker.maximumTalentPossible;
 
         Stat1.value = worker.talent;
         Stat2.value = worker.motivation;

@@ -26,13 +26,17 @@ public class Shop : MonoBehaviourSingleton<Shop> {
     public Dictionary<string, IItem> workers = new Dictionary<string, IItem>();
 
     //XML which will be used to load the items.
-    public string MaterialsToSellPath = "Assets/Data/materialsToSell.xml";
-    public string WorkersToHirePath = "Assets/Data/workersToHire.xml";
+    public string MaterialsToSellPath = "Data/materialsToSell";
+    //public string WorkersToHirePath = "Assets/Data/workersToHire.xml";
+    public string WorkersToHirePath = "Data/workersToHire";
 
 
         //Private Methods for internal (or common) operations;
 
     void Start() {
+        //MaterialsToSellPath = Application.dataPath + "/Data/materialsToSell.xml";
+        //WorkersToHirePath = Application.dataPath + "/Data/workersToHire.xml";
+
         //DataManager.XMLMarshalling(MaterialsToSellPath, GameMaterial.ExampleData());
         Load();
     }
@@ -48,6 +52,12 @@ public class Shop : MonoBehaviourSingleton<Shop> {
 
             Inventory.Instance.Money -= totalPrice;
             Inventory.Instance.Add(inventoryItem, item.Type);
+
+            if (item.Type == Inventory.Type.Worker) {
+                Recipes.Instance.actualUI.Factory.worker = ((Worker.HiredWorker)inventoryItem).worker;
+                Recipes.Instance.actualUI.UpdateGUI();
+            }
+
             return true;
         }
 
@@ -69,7 +79,10 @@ public class Shop : MonoBehaviourSingleton<Shop> {
 
     //Load Materials
     void LoadMaterialsToSell() {
-        GameMaterial.MaterialDataList mdl = DataManager.XMLUnmarshalling<GameMaterial.MaterialDataList>(MaterialsToSellPath);
+        TextAsset xml = Resources.Load<TextAsset>(MaterialsToSellPath);
+        GameMaterial.MaterialDataList mdl = DataManager.XMLUnmarshallingFromText<GameMaterial.MaterialDataList>(xml.text);
+
+        //GameMaterial.MaterialDataList mdl = DataManager.XMLUnmarshalling<GameMaterial.MaterialDataList>(MaterialsToSellPath);
         IItem[] items = new IItem[mdl.materials.Length];
 
         for (int i = 0; i < items.Length; i++) {
@@ -81,7 +94,10 @@ public class Shop : MonoBehaviourSingleton<Shop> {
 
     //Load Workers
     void LoadWorkersToHire() {
-        Worker.WorkerDataList wdl = DataManager.XMLUnmarshalling<Worker.WorkerDataList>(WorkersToHirePath);
+        TextAsset xml = Resources.Load<TextAsset>(WorkersToHirePath);
+        Worker.WorkerDataList wdl = DataManager.XMLUnmarshallingFromText<Worker.WorkerDataList>(xml.text);
+
+        //Worker.WorkerDataList wdl = DataManager.XMLUnmarshalling<Worker.WorkerDataList>(WorkersToHirePath);
         IItem[] items = new IItem[wdl.workers.Length];
         
         for (int i = 0; i < items.Length; i++) {

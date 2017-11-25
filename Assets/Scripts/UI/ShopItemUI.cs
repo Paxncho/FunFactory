@@ -21,7 +21,7 @@ public class ShopItemUI : MonoBehaviour {
 
     //Buy a Material, not Hire a Worker
     public virtual void Buy() {
-        bool test = Shop.Instance.BuyMaterial(item.Code, quantity);
+        Shop.Instance.BuyMaterial(item.Code, quantity);
 
         quantity = 0;
         quantityText.text = quantity.ToString();
