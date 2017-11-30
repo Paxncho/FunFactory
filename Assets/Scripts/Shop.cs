@@ -53,8 +53,9 @@ public class Shop : MonoBehaviourSingleton<Shop> {
             Inventory.Instance.Money -= totalPrice;
             Inventory.Instance.Add(inventoryItem, item.Type);
 
+            //Temporary
             if (item.Type == Inventory.Type.Worker) {
-                Recipes.Instance.actualUI.Factory.worker = ((Worker.HiredWorker)inventoryItem).worker;
+                Recipes.Instance.actualUI.factory.worker = ((Worker.HiredWorker)inventoryItem).worker;
                 Recipes.Instance.actualUI.UpdateGUI();
             }
 

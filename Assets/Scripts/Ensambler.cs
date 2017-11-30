@@ -13,7 +13,9 @@ public class Ensambler : MonoBehaviour {
     TimeSpan lastTimeToyCreated;
     int deltaSeconds = 0;
 
-    // Use this for initialization
+
+    public EnsamblerUI ui;
+
     void Start() {
         //Load();
         StartCoroutine(Creating());
@@ -85,12 +87,12 @@ public class Ensambler : MonoBehaviour {
                     int secondsLeft = deltaSeconds % secondsToCreate;
                     lastTimeToyCreated = DateTime.Now.TimeOfDay - new TimeSpan(0, 0, secondsLeft);
                 }
-            }
 
-            //Update UI
-            //if (ui != null) {
-            //    ui.UpdateGUI();
-            //}
+                //Update UI
+                if (ui != null) {
+                    ui.UpdateGUI();
+                }
+            }
         }
     }
 
@@ -100,6 +102,9 @@ public class Ensambler : MonoBehaviour {
         try {
             foreach(Piece p in pieces) {
                 int minimumPieceQuantity = Inventory.Instance.pieces[p.id].Quantity;
+
+                if (minimumPieceQuantity < minimunQuantity)
+                    minimunQuantity = minimumPieceQuantity;
 
                 if (PrintInConsole)
                     Debug.Log(p + ", " + minimumPieceQuantity);
