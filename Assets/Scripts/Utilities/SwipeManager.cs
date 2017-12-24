@@ -15,6 +15,7 @@ public class SwipeManager : MonoBehaviourSingleton<SwipeManager> {
     public static SwipeDirection Direction;
 
     public Vector2 distanceRequieredToSwipe = new Vector2(200, 400);
+    public Rect rectWhereToSwipe;
 
     Vector2 initialPos;
 
@@ -41,6 +42,9 @@ public class SwipeManager : MonoBehaviourSingleton<SwipeManager> {
 
             case TouchPhase.Ended:
                 Vector2 deltaPos = touch.position - initialPos;
+
+                if (!rectWhereToSwipe.Contains(touch.position) || !rectWhereToSwipe.Contains(initialPos))
+                    break;
 
                 if (Mathf.Abs(deltaPos.x) > distanceRequieredToSwipe.x) {
                     if (deltaPos.x > 0)

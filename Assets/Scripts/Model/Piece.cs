@@ -9,6 +9,7 @@ public class Piece {
         //Attributes of the class
     public string id;
     public string name;
+    public bool onlyColor;
     public Sprite sprite;
     public Color color;
 
@@ -65,6 +66,7 @@ public class Piece {
         return new Piece() {
             id = data.Id,
             name = data.Name,
+            onlyColor = data.IsOnlyColor,
             sprite = SpritePool.LoadSprite(data.SpriteId),
             color = new Color(data.R, data.G, data.G, data.A),
             materialsNeeded = StringToRequirements(data.Requirements),
@@ -86,6 +88,7 @@ public class Piece {
         pdl.pieces[0] = new PieceData() {
             Id = "P01",
             Name = "Piece 01",
+            IsOnlyColor = true,
             Quantity = 0,
             SecondsNeeded = 40,
             Requirements = "d5 10, d3 1,",
@@ -100,6 +103,7 @@ public class Piece {
         pdl.pieces[1] = new PieceData() {
             Id = "P02",
             Name = "Piece 02",
+            IsOnlyColor = false,
             Quantity = 0,
             SecondsNeeded = 20,
             Requirements = "d4 1, d3 1,",
@@ -130,6 +134,7 @@ public class Piece {
                 return new PieceData() {
                     Id = piece.id,
                     Name = piece.name,
+                    IsOnlyColor = piece.onlyColor,
                     Quantity = quantity,
                     Requirements = RequirementsToString(piece.materialsNeeded),
                     QuantityToCreate = piece.quantityToCreate,
@@ -154,6 +159,7 @@ public class Piece {
     [System.Serializable] public class PieceData : DataManager.IData {
         [XmlAttribute] public string Id;
         [XmlAttribute] public string Name;
+        [XmlAttribute] public bool IsOnlyColor;
         [XmlAttribute] public int Quantity;
         [XmlAttribute] public int SecondsNeeded;
         [XmlAttribute] public string Requirements;

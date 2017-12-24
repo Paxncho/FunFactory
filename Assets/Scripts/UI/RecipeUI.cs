@@ -17,6 +17,9 @@ public class RecipeUI : InventoryItemUI {
         ClearMaterials();
         base.UpdateUI();
 
+        if (item == null)
+            return;
+
         Piece.InventoryPiece piece = (Piece.InventoryPiece) item;
 
         for (int i = 0; i < piece.piece.materialsNeeded.Length; i++) {

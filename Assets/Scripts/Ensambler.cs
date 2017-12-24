@@ -1,24 +1,81 @@
 ﻿using System;
-using UnityEngine;
+using System.Xml.Serialization;
 using System.Collections;
+using System.Collections.Generic;
+
+using UnityEngine;
 
 public class Ensambler : MonoBehaviour {
 
-    public Piece[] pieces;
+    public static string saveFileName = "ensambler.fundata";
+
+    /*
+     * Datos para guardar
+     * [] idPieces
+     * working
+     * lastTimeCreated
+     */
+
+    public List<Piece> pieces = new List<Piece>();
+    //public Piece[] pieces;
 
     public int secondsToCreate = 5;
     public bool working;
     public bool PrintInConsole = true;
 
     TimeSpan lastTimeToyCreated;
-    int deltaSeconds = 0;
+    double deltaSeconds = 0;
 
 
     public EnsamblerUI ui;
 
     void Start() {
-        //Load();
         StartCoroutine(Creating());
+    }
+
+    public EnsamblerData Save() {
+
+        EnsamblerData data = new EnsamblerData();
+        List<string> ids = new List<string>();
+        for (int i = 0; i < pieces.Count; i++) {
+            ids.Add(pieces[i].id);
+        }
+
+        data.piecesId = ids.ToArray();
+        data.lastTimeToyCreated = lastTimeToyCreated.ToString();
+        data.working = working;
+
+        return data;
+    }
+    public void TrySave() {
+        string filePath = Application.persistentDataPath + "/" + saveFileName;
+        DataManager.XMLMarshalling(filePath, Save());
+
+    }
+    public void Load(EnsamblerData data) {
+        pieces.Clear();
+        
+        for (int i = 0; i < data.piecesId.Length; i++) {
+            pieces.Add(((Piece.InventoryPiece)Inventory.Instance.pieces[data.piecesId[i]]).piece);
+        }
+
+        lastTimeToyCreated = TimeSpan.Parse(data.lastTimeToyCreated);
+
+        if (data.working) {
+            secondsToCreate = pieces.Count * 3;
+            working = true;
+        }
+
+        ui.UpdateGUI();
+            
+    }
+    public void TryLoad() {
+        string filePath = Application.persistentDataPath + "/" + saveFileName;
+
+        if (System.IO.File.Exists(filePath)) {
+            EnsamblerData data = DataManager.XMLUnmarshalling<EnsamblerData>(filePath);
+            Load(data);
+        }
     }
 
     public void Rest() {
@@ -27,15 +84,22 @@ public class Ensambler : MonoBehaviour {
     }
 
     public void Work() {
-        if (pieces.Length == 0) 
+        if (pieces.Count == 0) {
             return;
+        }
 
+        if (CheckPiecesEnough(pieces.ToArray(), 1) <= 0) {
+            UIManager.Instance.ShowAlert("There are not enough parts to glue.", UIManager.Instance.ToInventoryPieces);
+            return;
+        }
+
+        secondsToCreate = pieces.Count * 3;
         working = true;
         lastTimeToyCreated = DateTime.Now.TimeOfDay;
     }
 
     public int TimeLeft() {
-        return secondsToCreate - deltaSeconds;
+        return secondsToCreate - (int) deltaSeconds;
     }
 
     public void GetRandomPieces() {
@@ -44,11 +108,11 @@ public class Ensambler : MonoBehaviour {
         if (count > 3)
             count = 3;
 
-        pieces = new Piece[count];
+        pieces.Clear();
 
         int i = 0;
         foreach (string key in Inventory.Instance.pieces.Keys) {
-            pieces[i] = ((Piece.InventoryPiece) Inventory.Instance.pieces[key]).piece;
+            pieces.Add(((Piece.InventoryPiece) Inventory.Instance.pieces[key]).piece);
 
             i++;
 
@@ -64,7 +128,7 @@ public class Ensambler : MonoBehaviour {
         while (true) {
             yield return new WaitForSeconds(1.0f);
 
-            deltaSeconds = (DateTime.Now.TimeOfDay - lastTimeToyCreated).Seconds;
+            deltaSeconds = (DateTime.Now.TimeOfDay - lastTimeToyCreated).TotalSeconds;
 
             if (working) {
 
@@ -74,18 +138,22 @@ public class Ensambler : MonoBehaviour {
                 if (deltaSeconds >= secondsToCreate) {
 
                     //Check how many toys
-                    int toysToCreate = deltaSeconds / secondsToCreate;
+                    int toysToCreate = (int) deltaSeconds / secondsToCreate;
 
-                    toysToCreate = CheckPiecesEnough(pieces, toysToCreate);
+                    toysToCreate = CheckPiecesEnough(pieces.ToArray(), toysToCreate);
                     
                     if (toysToCreate > 0) {
-                        CreateToy(pieces, toysToCreate);
+                        CreateToy(pieces.ToArray(), toysToCreate);
                     } else {
                         Rest();
+                        pieces.Clear();
                     }
 
-                    int secondsLeft = deltaSeconds % secondsToCreate;
+                    int secondsLeft = (int) deltaSeconds % secondsToCreate;
                     lastTimeToyCreated = DateTime.Now.TimeOfDay - new TimeSpan(0, 0, secondsLeft);
+
+                    if (CheckPiecesEnough(pieces.ToArray(), 1) <= 0)
+                        Rest();
                 }
 
                 //Update UI
@@ -125,32 +193,24 @@ public class Ensambler : MonoBehaviour {
             Inventory.Instance.Remove(p.id, totalQuantity, Inventory.Type.Piece);
         }
 
-        //Code to generate a Toy
-        GameObject prefab = UIManager.Instance.generateToy.basePrefab;
-        Transform parent = UIManager.Instance.generateToy.parent;
-        Transform startPoint = UIManager.Instance.generateToy.generationPoint;
+        Toy.ToyData data = new Toy.ToyData() {
+            pieces = pieces
+        };
 
-        SpriteRenderer sr = prefab.GetComponent<SpriteRenderer>();
-        sr.sprite = pieces[0].sprite;
-        sr.color = pieces[0].color;
+        Inventory.Instance.Add(data);
 
-        GameObject toy = ObjectPool.Instantiate(prefab, startPoint.position, prefab.transform.rotation, parent);
-
-        GameObject piecePrefab = UIManager.Instance.generateToy.piecePrefab;
-        for (int i = 1; i < pieces.Length; i++) {
-            SpriteRenderer psr = piecePrefab.GetComponent<SpriteRenderer>();
-            psr.sprite = pieces[i].sprite;
-            psr.color = pieces[i].color;
-
-            GameObject piece = ObjectPool.Instantiate(piecePrefab, toy.transform.position, piecePrefab.transform.rotation, toy.transform);
-
-            //Add the Joint to make them together;
-            toy.AddComponent<FixedJoint2D>().connectedBody = piece.GetComponent<Rigidbody2D>();
-        }
-
-        if (PrintInConsole)
-            Debug.Log("Toy Created");
-
+        MiniGameManager.Instance.GenerateToy(data);
     }
-    
+
+    void OnApplicationQuit() {
+        TrySave();
+    }
+
+    [XmlRoot] public class EnsamblerData : DataManager.IData {
+        [XmlArray, XmlArrayItem] public string[] piecesId;
+        [XmlAttribute] public bool working;
+        [XmlAttribute] public string lastTimeToyCreated;
+        public EnsamblerData() { }
+    }
+
 }

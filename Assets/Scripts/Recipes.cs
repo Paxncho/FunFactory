@@ -9,7 +9,7 @@ public class Recipes : MonoBehaviourSingleton<Recipes> {
         //Attributes of the Recipe Manager
 
     //Dictionary to store the recipes
-    public Dictionary<string, Piece> pieces = new Dictionary<string, Piece>();
+    public Dictionary<string, Piece> recipes = new Dictionary<string, Piece>();
 
     //XML Which will be used to load the recipes
     public string RecipesPath = "Data/recipes";
@@ -31,7 +31,7 @@ public class Recipes : MonoBehaviourSingleton<Recipes> {
 
         for (int i = 0; i < dataPieces.Length; i++) {
             dataPieces[i] = Piece.ReadData(pdl.pieces[i]);
-            pieces.Add(dataPieces[i].id, dataPieces[i]);
+            recipes.Add(dataPieces[i].id, dataPieces[i]);
         }
     }
 
@@ -56,6 +56,7 @@ public class Recipes : MonoBehaviourSingleton<Recipes> {
         RecipeUI itemUI = go.GetComponent<RecipeUI>();
         itemUI.item = p.ToInventory();
         itemUI.UpdateUI();
+        itemUI.ResetListeners();
         itemUI.AddListener<string>(actualUI.UpdateRecipe, p.id);
         itemUI.AddListener(UIManager.Instance.BackFromRecipes);
 
@@ -64,6 +65,26 @@ public class Recipes : MonoBehaviourSingleton<Recipes> {
 
 
         //Public methods to connect with other classes
+
+    public Piece GetRandomPiece() {
+
+        if (recipes.Count <= 0)
+            return null;
+
+        List<Piece> values = System.Linq.Enumerable.ToList(recipes.Values);
+        int size = values.Count;
+
+        return values[Random.Range(0, size)];
+
+    }
+
+    public void GiveThemParts() {
+        foreach (KeyValuePair<string, Piece> entry in recipes) {
+            Inventory.IItem item = entry.Value.ToInventory();
+            item.Quantity = 1;
+            Inventory.Instance.Add(item, Inventory.Type.Piece);
+        }
+    }
 
     //Update all the UI
     public void UpdateGUI() {
@@ -74,13 +95,9 @@ public class Recipes : MonoBehaviourSingleton<Recipes> {
         GameObject prefab = UIManager.Instance.recipesUI.prefab;
         Transform parent = UIManager.Instance.recipesUI.parent;
 
-        foreach(string code in pieces.Keys) {
-            Piece p = pieces[code];
+        foreach(string code in recipes.Keys) {
+            Piece p = recipes[code];
             UpdateGUI(p, prefab, parent);
         }
-    }
-
-    public void UpdateWorkersUI() {
-
     }
 }

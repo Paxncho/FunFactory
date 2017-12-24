@@ -53,12 +53,6 @@ public class Shop : MonoBehaviourSingleton<Shop> {
             Inventory.Instance.Money -= totalPrice;
             Inventory.Instance.Add(inventoryItem, item.Type);
 
-            //Temporary
-            if (item.Type == Inventory.Type.Worker) {
-                Recipes.Instance.actualUI.factory.worker = ((Worker.HiredWorker)inventoryItem).worker;
-                Recipes.Instance.actualUI.UpdateGUI();
-            }
-
             return true;
         }
 
@@ -150,9 +144,57 @@ public class Shop : MonoBehaviourSingleton<Shop> {
 
     public bool HireWorker(string codeWorker) {
         IItem item = workers[codeWorker];
-        workers.Remove(codeWorker);
+        bool buy = Buy(item, 1);
+
+        if (buy)
+            workers.Remove(codeWorker);
+
+        DeselectWorkers();
         UpdateGUI();
-        return Buy(item, 1);
+        return buy;
+    }
+
+    public void BuyMaterials() {
+        Transform materialsParent = UIManager.Instance.shopUI.materialsParent;
+
+        for (int i = 0; i < materialsParent.childCount; i++) {
+            ShopItemUI item = materialsParent.GetChild(i).GetComponent<ShopItemUI>();
+
+            int quantity = int.Parse(item.quantityText.text);
+
+            if (item != null && quantity > 0) {
+                item.Buy();
+            }
+        }
+
+    }
+
+    public void HireSelectedWorker() {
+        Transform workersParent = UIManager.Instance.shopUI.workersParent;
+
+        for (int i = 0; i < workersParent.childCount; i++) {
+            ShopWorkerItemUI item = workersParent.GetChild(i).GetComponent<ShopWorkerItemUI>();
+
+            if (item != null) {
+                if (item.IsSelected()) {
+                    item.Buy();
+                    break;
+                }
+            }
+        }
+    }
+
+    public void DeselectWorkers() {
+        Transform workersParent = UIManager.Instance.shopUI.workersParent;
+
+        for (int i = 0; i < workersParent.childCount; i++) {
+            ShopWorkerItemUI item = workersParent.GetChild(i).GetComponent<ShopWorkerItemUI>();
+
+            if (item != null) {
+                item.Deselect();
+                item.UpdateUI();
+            }
+        }
     }
 
     //Update all the UI

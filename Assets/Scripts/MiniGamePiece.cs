@@ -2,10 +2,10 @@
 using UnityEngine;
 
 public class MiniGamePiece : MonoBehaviour {
-    public DataPiece data;
+    public Piece item;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start() {
 
         //Destroy the previous colliders in the gameObject
         foreach (Collider2D c in GetComponents<Collider2D>()) {
@@ -20,16 +20,11 @@ public class MiniGamePiece : MonoBehaviour {
         //}
 
         //Create them a Collider
-        gameObject.AddComponent<CapsuleCollider2D>();
+        //gameObject.AddComponent<CapsuleCollider2D>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
-    public string[] GetData() {
-        return new string[] { data.color.ToString(), data.idTexture };
+    public Piece GetData() {
+        return item;
     }
 }
 

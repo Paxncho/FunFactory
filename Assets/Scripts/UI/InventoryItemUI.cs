@@ -9,6 +9,7 @@ public class InventoryItemUI : MonoBehaviour {
     public Image icon;
     public Text nameText;
     public Text quantityText;
+
     public Button button;
 
     public virtual void UpdateUI() {

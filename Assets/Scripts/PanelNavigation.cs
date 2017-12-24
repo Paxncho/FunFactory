@@ -11,11 +11,16 @@ public class PanelNavigation : MonoBehaviour {
     public Transform[] worldScreens;
     public int worldWidth;
 
+    public UINavigationButtons buttons;
+    public bool main;
+    public PanelNavigation mainPanel;
+
     int actualScreen;
 
 	// Use this for initialization
 	void Start () {
-        MoveToScreen(1);
+        if (main)
+            MoveToScreen(1);
 	}
 
     // Update is called once per frame
@@ -37,6 +42,9 @@ public class PanelNavigation : MonoBehaviour {
     }
 
     public void MoveToScreen(int panel) {
+        if (!main)
+            DeactiveMain();
+
         for (int i = 0; i < panels.Length; i++) {
             if (panels[i] != null) {
                 //Debug.Log(panels[i].localPosition);
@@ -54,6 +62,18 @@ public class PanelNavigation : MonoBehaviour {
             }
         }
 
+        buttons.UpdateButtons(panel);
+
         actualScreen = panel;
+    }
+
+    public void DeactiveMain() {
+        if (!main)
+            mainPanel.gameObject.SetActive(false);
+    }
+
+    public void ReactiveMain() {
+        if (!main)
+            mainPanel.gameObject.SetActive(true);
     }
 }

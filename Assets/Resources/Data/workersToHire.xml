@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <WorkerDataList>
 	<workers>
-		<WorkerData Id="d1" Name="Worker1" Price="8000" Quantity="1" SpriteId="cris" Tired="0" Talent="50" Motivation="0.4" R="1" G="1" B="1" A="1"/>
-		<WorkerData Id="d2" Name="DevilWorker" Price="666" Quantity="6" SpriteId="devil" Tired="0.2" Talent="20" Motivation="0.1" R="1" G="0" B="0" A="1"/>
-		<WorkerData Id="d3" Name="GoldWorker" Price="10000" Quantity="1" SpriteId="star01" Tired="0" Talent="90" Motivation="0.8" R="1" G="1" B="1" A="1"/>
+		<WorkerData Id="d1" Name="Juan" Price="1200" Quantity="1" SpriteId="juan" Tired="0" Talent="40" Motivation="0.5" R="1" G="1" B="1" A="1"/>
+		<WorkerData Id="d2" Name="Miguel" Price="850" Quantity="6" SpriteId="miguel" Tired="0.2" Talent="20" Motivation="0.7" R="1" G="1" B="1" A="1"/>
+		<WorkerData Id="d3" Name="Agustin" Price="3000" Quantity="1" SpriteId="agustin" Tired="0" Talent="90" Motivation="0.9" R="1" G="1" B="1" A="1"/>
 	</workers>
 </WorkerDataList>

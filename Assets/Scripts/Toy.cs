@@ -5,7 +5,10 @@ using UnityEngine;
 public class Toy : MonoBehaviour {
 
     public Color selectedColor = Color.gray;
-    public int score = 100;
+    public int score = 200;
+
+    public Piece item;
+    public ToyData data;
 
     [HideInInspector] public bool selected;
     
@@ -18,8 +21,6 @@ public class Toy : MonoBehaviour {
 
         originalColor = m_renderer.color;
         MiniGameManager.Instance.AddToy(gameObject);
-        Debug.Log("This is Start");
-
 
         //Collider Thing
         foreach (Collider2D c in GetComponents<Collider2D>()) {
@@ -28,11 +29,6 @@ public class Toy : MonoBehaviour {
 
         gameObject.AddComponent<CapsuleCollider2D>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
     void OnMouseEnter() {
         Debug.Log("Selected");
@@ -55,14 +51,28 @@ public class Toy : MonoBehaviour {
         selected = false;
     }
 
-    public string[] GetToyData() {
-        List<string> dataList = new List<string>();
-        foreach (MiniGamePiece p in GetComponentsInChildren<MiniGamePiece>()) {
-            foreach (string s in p.GetData()) {
-                dataList.Add(s);
-            }
-        }
-
-        return dataList.ToArray();
+    public Piece[] GetToyData() {
+        return data.pieces;
     }
+
+    public class ToyData {
+        public Piece[] pieces;
+        public ToyData() { }
+
+        public TData ToData() {
+            string[] ids = new string[pieces.Length];
+            for (int i = 0; i < ids.Length; i++) {
+                ids[i] = pieces[i].id;
+            }
+            return new TData() {
+                idPieces = ids
+            };
+        }
+    }
+
+    public class TData : DataManager.IData {
+        public string[] idPieces;
+        public TData() { }
+    }
+
 }

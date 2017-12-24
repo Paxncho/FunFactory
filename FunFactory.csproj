@@ -103,6 +103,7 @@
     <Compile Include="Assets\Scripts\UI\ShopItemUI.cs" />
     <Compile Include="Assets\Scripts\UI\ShopWorkerItemUI.cs" />
     <Compile Include="Assets\Scripts\UI\UIManager.cs" />
+    <Compile Include="Assets\Scripts\UI\UINavigationButtons.cs" />
     <Compile Include="Assets\Scripts\UI\WorkerStationUI.cs" />
     <Compile Include="Assets\Scripts\Utilities\CameraAspectRatioControl.cs" />
     <Compile Include="Assets\Scripts\Utilities\DataManager.cs" />

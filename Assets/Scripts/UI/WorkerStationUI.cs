@@ -12,6 +12,7 @@ public class WorkerStationUI : MonoBehaviour {
 
     public UIManager.TimeBar time;
     public RecipeUI recipe;
+    public GameObject recipeExtras;
 
     void Start() {
         WorkerStats[0].bar.interactable = false;
@@ -29,9 +30,11 @@ public class WorkerStationUI : MonoBehaviour {
     public void UpdateGUI() {
         if (factory == null) {
             stats.SetActive(false);
+            recipeExtras.SetActive(false);
             return;
         } else if (factory.worker == null) {
             stats.SetActive(false);
+            recipeExtras.SetActive(false);
             UpdateTime();
             return;
         } else {
@@ -50,7 +53,13 @@ public class WorkerStationUI : MonoBehaviour {
         WorkerStats[1].percentage.text = (factory.worker.motivation * 100f) + "%";
         WorkerStats[2].percentage.text = (factory.worker.tired * 100f) + "%";
 
-        Worker.sprite = factory.worker.sprite;  
+        Worker.sprite = factory.worker.sprite;
+        Worker.color = Color.white;
+
+        if (recipe.item == null)
+            recipeExtras.SetActive(false);
+        else
+            recipeExtras.SetActive(true);
 
         recipe.UpdateUI();
         UpdateTime();
@@ -65,13 +74,13 @@ public class WorkerStationUI : MonoBehaviour {
             time.bar.value = percentage;
             time.timeLeftText.text = timeLeft + "s Left";
         } else {
+            time.bar.value = 0;
             time.timeLeftText.text = "Not Working";
-
         }
     }
 
     public void UpdateRecipe(string code) {
-        factory.pieceToCreate = Recipes.Instance.pieces[code];
+        factory.pieceToCreate = Recipes.Instance.recipes[code];
         recipe.item = factory.pieceToCreate.ToInventory();
         factory.Rest();
         factory.Work();
@@ -79,9 +88,33 @@ public class WorkerStationUI : MonoBehaviour {
     }
 
     public void UpdateWorker(string code) {
+        Transform workersParent = UIManager.Instance.inventoryUI.workersParent;
+
+        for (int i = 0; i < workersParent.childCount; i++) {
+            InventoryWorkerUI iwui = workersParent.GetChild(i).GetComponent<InventoryWorkerUI>();
+
+            if (iwui != null)
+                iwui.ResetListeners();
+        }
+
+        UIManager.Instance.BackFromInventory();
+
+
         factory.worker = ((Worker.HiredWorker)Inventory.Instance.workers[code]).worker;
         factory.Work();
         UpdateGUI();
+    }
+
+    public void UpdateWorker() {
+        UIManager.Instance.ToInventoryWorkers();
+        Transform workersParent = UIManager.Instance.inventoryUI.workersParent;
+
+        for (int i = 0; i < workersParent.childCount; i++) {
+            InventoryWorkerUI iwui = workersParent.GetChild(i).GetComponent<InventoryWorkerUI>();
+
+            if (iwui != null)
+                iwui.AddListener<string>(UpdateWorker, iwui.item.Code);
+        }
     }
 
     public void UpdateFactory(Factory f) {

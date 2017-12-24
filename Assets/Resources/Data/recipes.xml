@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <PieceDataList>
 	<pieces>
-		<PieceData Id="P01" Name="Piece 01" Quantity="0" SecondsNeeded="40" Requirements="d5 10, d3 1," QuantityToCreate="1" SpriteId="patito" R="1" G="1" B="1" A="1"/>
-		<PieceData Id="P02" Name="Piece 02" Quantity="0" SecondsNeeded="20" Requirements="d4 1, d3 1," QuantityToCreate="5" SpriteId="devil" R="1" G="1" B="1" A="1"/>
+		<PieceData Id="P01" Name="Bear Head" Quantity="0" SecondsNeeded="6" Requirements="d4 2," QuantityToCreate="1" SpriteId="bearhead" R="1" G="1" B="1" A="1"/>
+		<PieceData Id="P02" Name="Bear Body" Quantity="0" SecondsNeeded="6" Requirements="d4 3," QuantityToCreate="1" SpriteId="bearbody" R="1" G="1" B="1" A="1"/>
+		<PieceData Id="P03" Name="Bear Punches" Quantity="0" SecondsNeeded="4" Requirements="d4 1," QuantityToCreate="1" SpriteId="bearpunchs" R="1" G="1" B="1" A="1"/>
+		<PieceData Id="P04" Name="Bear Feets" Quantity="0" SecondsNeeded="4" Requirements="d4 1," QuantityToCreate="1" SpriteId="bearfeets" R="1" G="1" B="1" A="1"/>
+		<PieceData Id="P05" Name="Truck Body" Quantity="0" SecondsNeeded="3" Requirements="d1 4," QuantityToCreate="1" SpriteId="truckbody" R="1" G="1" B="1" A="1"/>
+		<PieceData Id="P06" Name="Truck Wheels" Quantity="0" SecondsNeeded="5" Requirements="d1 2," QuantityToCreate="1" SpriteId="truckwheels" R="1" G="1" B="1" A="1"/>
 	</pieces>
 </PieceDataList>

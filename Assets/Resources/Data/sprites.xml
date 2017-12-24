@@ -8,5 +8,21 @@
 		<TextureData id="patito" path="Sprites/patito" name="patito" description="A Duck"/>
 		<TextureData id="devil" path="Sprites/devil" name="devil" description="Devil"/>
 		<TextureData id="cris" path="Sprites/cris" name="cris" description="cris"/>
+		<TextureData id="wood" path="Sprites/woodIcon" name="wood" description="The icon of a wood"/>
+		<TextureData id="pigment" path="Sprites/pigment" name="pigment" description="Pigment for color"/>
+		<TextureData id="woodcircle" path="Sprites/woodCircle" name="woodcircle" description="A circle made of wood"/>
+		<TextureData id="steelcircle" path="Sprites/steelCircle" name="steelcircle" description="A circle made of steel"/>
+		<TextureData id="woodbox" path="Sprites/woodBox" name="woodbox" description="A box made of wood"/>
+		<TextureData id="steel" path="Sprites/steelbars" name="steel" description="The icon of a steel bar"/>
+		<TextureData id="truckbody" path="Sprites/truckBody" name="body" description="Body of a Truck"/>
+		<TextureData id="truckwheels" path="Sprites/wheels" name="wheels" description="Wheels of a Truck"/>
+		<TextureData id="bearhead" path="Sprites/bearHead" name="Bear Head" description="Head of a Bear"/>
+		<TextureData id="bearbody" path="Sprites/bearBody" name="Bear Body" description="Body of a Bear"/>
+		<TextureData id="bearpunchs" path="Sprites/bearPunchs" name="Bear Punches" description="Punches of a Bear"/>
+		<TextureData id="bearfeets" path="Sprites/bearFeets" name="Bear Feets" description="Feets of a Bear"/>
+		<TextureData id="cotton" path="Sprites/cotton" name="Cotton" description="Cotton"/>
+		<TextureData id="juan" path="Sprites/donJuan" name="Juan" description="Juan"/>
+		<TextureData id="miguel" path="Sprites/donMiguel" name="Miguel" description="Miguel"/>
+		<TextureData id="agustin" path="Sprites/donAgustin" name="Agustin" description="Agustin"/>
 	</textures>
 </TextureDataList>
